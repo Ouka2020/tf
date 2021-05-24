@@ -1,0 +1,72 @@
+<div class="modal fade" id="dianFei_guHuaLuRu_batchInsertDialog" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">批量新增</h3>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">数据源</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-inline">
+                            <input class="form-control" id="dianFei_guHuaLuRu_file" type="file">
+                            <input class="btn btn-primary" id="dianFei_guHuaLuRu_loadExcel" type="button" value="加载">
+                        </form>
+                    </div>
+                </div>
+                <div class="collapse" id="dianFei_guHuaLuRu_sheetSelector">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">选择工作表</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group" role="group"></div>
+                            <div class="form-group">
+                                <label>
+                                    <input class="btn btn-primary" id="dianFei_guHuaLuRu_btnNext" type="button"
+                                           value="下一步">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse" id="dianFei_guHuaLuRu_attachSelector">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">选择附件</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group" role="group">
+                                <form class="form-inline" id="dianFei_guHuaLuRu_uploadForm">
+                                    <input class="form-control" id="dianFei_guHuaLuRu_attach" multiple type="file">
+                                </form>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input class="btn btn-primary" id="dianFei_guHuaLuRu_run" type="button" value="执行">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse" id="dianFei_guHuaLuRu_resultDisplay">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">执行结果</h3>
+                        </div>
+                        <div class="panel-body panel-body-scroll"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-warning" disabled id="dianFei_guHuaLuRu_btnCancel" type="button" value="取消">
+                <input class="btn btn-primary" data-dismiss="modal" type="button" value="关闭">
+            </div>
+        </div>
+    </div>
+</div>
