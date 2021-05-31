@@ -1,4 +1,6 @@
-const prodConfig: {} = {
+import {Configuration} from "webpack";
+
+const prodConfig: Configuration = {
     mode: 'production',
     optimization: {
         minimize: false,
@@ -8,9 +10,12 @@ const prodConfig: {} = {
         'moment': 'moment',
         'bootstrap': 'bootstrap',
         'bootstrap-table': 'bootstrap-table',
-        '$': 'JQuery',
-        'jquery': 'JQuery',
-        'window.jquery': 'JQuery',
+        '$': 'jquery',
+        'jquery': 'jquery',
+        'window.jquery': 'jquery',
+        'vue': 'vue',
+        'element-plus': 'element-plus'
     }
 }
+
 export {prodConfig}

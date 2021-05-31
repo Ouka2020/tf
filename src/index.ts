@@ -1,18 +1,24 @@
-/**
- * 判断附件是否需要上传
- * @param attachList 文件清单
- * @param testName 待测试文件名
- */
-export function checkAttachNeedUpload(attachList: string, testName: string) {
-    if (attachList === undefined || attachList === null)
-        return false
+import {createApp} from 'vue';
+import App from './App.vue';
+import {loadStyle} from './utils';
 
-    let attaches = attachList.split(',')
-    for (let i = 0; i < attaches.length; i++) {
-        if (testName === attaches[i])
-            return true
-    }
+const id = `app_vue_${Date.now()}`
+const root = document.createElement('div')
+root.id = id
+document.body.appendChild(root)
 
-    return false
+const app = createApp(App)
+
+if (process.env.NODE_ENV === 'development') {
+    loadStyle('https://cdn.jsdelivr.net/npm/element-plus@1.0.2-beta.45/lib/theme-chalk/index.css');
+    loadStyle('https://cdn.jsdelivr.net/npm/bootstrap@3.3.6/dist/css/bootstrap.min.css');
+    loadStyle('https://cdn.jsdelivr.net/npm/bootstrap@3.3.6/dist/css/bootstrap-theme.min.css');
+
+    //const ElementUI = require('element-ui')
+    const elementPlus = await import('element-plus')
+    app.use(elementPlus, {size: 'small'})
 }
 
+//Vue.config.productionTip = false
+//console.info(process.env.NODE_MODE)
+app.mount(`#${id}`)
