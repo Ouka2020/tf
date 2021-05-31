@@ -1,0 +1,28 @@
+{
+  "name": "nextvue2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.29.1",
+    "vue": "3.0.0",
+    "vue-class-component": "^8.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@types/webpack": "^5.28.0",
+    "cross-env": "^7.0.3",
+    "sass": "^1.34.0",
+    "sass-loader": "^11.1.1",
+    "ts-loader": "^9.2.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2",
+    "vue-loader": "^15.9.7",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-merge": "^5.7.3"
+  },
+  "scripts": {
+    "build.dev": "cross-env TS_NODE_PROJECT=\"webpack.tsconfig.json\" webpack --mode development",
+    "build.prod": "cross-env TS_NODE_PROJECT=\"webpack.tsconfig.json\" webpack --mode production"
+  }
+}

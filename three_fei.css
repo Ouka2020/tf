@@ -1,9 +1,0 @@
-.panel-body-scroll {
-    overflow: auto;
-    max-height: 150px;
-}
-
-.panel-body-scroll p {
-    word-break: break-all;
-    word-wrap: break-word;
-}
