@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>test page</title>
-    <% for (let css of csses) { %>
+<!doctype html>
+<html>
+<title>test page</title>
+<% for (let css of csses) { %>
     <link rel="stylesheet" href="<%= css %>">
-    <% } %>
-</head>
+<% } %>
+</html>
 <body>
 <% for (let js of jses) { %>
-<script type="application/ecmascript" src="<%= js %>"></script>
+    <script src="<%= js %>"></script>
 <% } %>
 </body>
-</html>

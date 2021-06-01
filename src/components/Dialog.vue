@@ -8,37 +8,42 @@
         width="30%"
         :before-close="handleClose">
       <span>这是一段信息{{ msg }}</span>
-      <template #footer>
-    <span class="dialog-footer">
+      <div slot="footer">
+      <span class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
     </span>
-      </template>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import {Vue} from "vue-class-component";
 import {ElMessageBox} from "element-plus";
-import {Prop} from "vue-property-decorator";
+import {ref} from "vue";
 
-// const DialogProps = Vue.extend({
-//   props: {
-//     msg: String
-//   }
-// })
+export default {
+  name: 'Dialog',
+  props: {
+    msg: {
+      type: String
+    }
+  },
+  setup() {
+    //const msg = ref<string>()
+    const dialogVisible = ref<boolean>(false)
 
-export default class Dialog extends Vue {
-  @Prop({type:String}) msg!:string
-
-  async handleClose(done: () => void) {
-    console.info(await ElMessageBox.confirm('确认关闭？').catch(reason => {
-      console.info(reason)
-    }))
-    done()
+    // 必须返回模块中才能够使
+    return {dialogVisible}
+  },
+  methods: {
+    async handleClose(done: () => void) {
+      console.info(await ElMessageBox.confirm('确认关闭？').catch(reason => {
+        console.info(reason)
+      }))
+      done()
+    }
   }
-
 }
 </script>
 

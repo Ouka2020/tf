@@ -1,20 +1,19 @@
 <template>
   <div>
-    <dialog :msg="abc"></dialog>
+    <Dialog :msg="'abc'"></Dialog>
   </div>
 </template>
 
 <script lang="ts">
-import {Options, Vue} from "vue-class-component";
-import Dialog from "./components/Dialog";
+import Dialog from "./components/Dialog.vue";
+import {ref} from "vue";
 
-@Options({
-  components:{
-    Dialog
+export default {
+  name: 'App',
+  components: {Dialog},
+  setup() {
+    //const msg = ref<string>()
   }
-})
-export default class App extends Vue {
-
 }
 </script>
 

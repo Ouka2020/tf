@@ -8,8 +8,7 @@
     "element-plus": "^1.0.2-beta.45",
     "jquery": "1.11.3",
     "moment": "^2.29.1",
-    "vue": "3.0.0",
-    "vue-class-component": "^8.0.0-rc.1"
+    "vue": "3.0.11"
   },
   "devDependencies": {
     "@types/webpack": "^5.28.0",
@@ -24,7 +23,6 @@
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2",
     "vue-loader": "^16.2.0",
-    "vue-property-decorator": "^9.1.2",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2",
