@@ -6,6 +6,8 @@ import VueLoaderPlugin from "vue-loader/dist/plugin"
 import {CleanWebpackPlugin} from "clean-webpack-plugin"
 import path from "path"
 
+const ExtractCssChunksPlugin = require('extract-css-chunks-webpack-plugin');
+
 import dotenv from "dotenv"
 
 const dotEnv = dotenv.config({
@@ -45,7 +47,15 @@ const commonConfig = {
             {
                 test: /\.s[ac]ss$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: ExtractCssChunksPlugin.loader,
+                        options: {
+                            hot: true,
+                            reloadAll: true,
+                            modules: true,
+                            esModule: true,
+                        }
+                    },
                     'css-loader',
                     'sass-loader'
                 ]
@@ -59,6 +69,7 @@ const commonConfig = {
     plugins: [
         new VueLoaderPlugin(),
         new CleanWebpackPlugin(),
+        new ExtractCssChunksPlugin(),
         new DefinePlugin({
             "process.env": dotEnv.parsed
         })

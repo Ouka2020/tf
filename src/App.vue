@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Dialog :msg="'abc'"></Dialog>
+    <Dialog msg="abc"></Dialog>
+    <Dialog msg="cba"></Dialog>
   </div>
 </template>
 

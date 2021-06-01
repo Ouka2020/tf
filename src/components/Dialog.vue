@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex">
     <button class="btn btn-primary" @click="dialogVisible = true">{{ msg }}</button>
 
     <el-dialog
@@ -30,7 +30,6 @@ export default {
     }
   },
   setup() {
-    //const msg = ref<string>()
     const dialogVisible = ref<boolean>(false)
 
     // 必须返回模块中才能够使
@@ -38,15 +37,15 @@ export default {
   },
   methods: {
     async handleClose(done: () => void) {
-      console.info(await ElMessageBox.confirm('确认关闭？').catch(reason => {
-        console.info(reason)
-      }))
+      console.info(await ElMessageBox.confirm('确认关闭？'))
       done()
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.flex{
+  float: left;
+}
 </style>

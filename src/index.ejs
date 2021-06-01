@@ -1,12 +1,17 @@
-<!doctype html>
-<html>
-<title>test page</title>
-<% for (let css of csses) { %>
-    <link rel="stylesheet" href="<%= css %>">
-<% } %>
-</html>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>test page</title>
+    <% for (let css of csses) { %>
+        <link rel="stylesheet" href="<%= css %>" media="screen">
+    <% } %>
+</head>
 <body>
+<div class="btn-toolbar"></div>
 <% for (let js of jses) { %>
     <script src="<%= js %>"></script>
 <% } %>
 </body>
+</html>

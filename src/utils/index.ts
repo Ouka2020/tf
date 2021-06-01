@@ -2,13 +2,13 @@
  * load style file
  * @param {String} url
  */
-export const loadStyle = (url: string):void => {
-    const head = document.getElementsByTagName('head')[0];
+export const loadStyle = (url: string): void => {
+    const head = document.querySelector('head');
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href = url;
-    link.media = 'all';
+    link.media = 'screen';
     head.appendChild(link);
 }
 
