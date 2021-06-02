@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex-div">
     <button class="btn btn-primary" @click="dialogVisible = true">{{ msg }}</button>
 
     <el-dialog
@@ -45,7 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flex{
-  float: left;
-}
+
 </style>

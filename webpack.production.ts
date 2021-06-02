@@ -14,7 +14,8 @@ const prodConfig: Configuration = {
         'jquery': 'jquery',
         'window.jquery': 'jquery',
         'vue': 'vue',
-        'element-plus': 'element-plus'
+        'element-plus': 'element-plus',
+        'exceljs': 'exceljs'
     }
 }
 

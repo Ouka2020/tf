@@ -16,7 +16,8 @@ const dotEnv = dotenv.config({
 
 const commonConfig = {
     entry: {
-        index: './src/index.ts'
+        //index: ['./src/index.ts', './src/index.scss'],
+        zuJinJiaoFei: ['./src/zu_jin_jiao_fei.ts', './src/index.scss']
     },
     output: {
         path: path.resolve('dist'),

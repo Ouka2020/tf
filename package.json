@@ -6,11 +6,13 @@
   "dependencies": {
     "bootstrap": "3.3.6",
     "element-plus": "^1.0.2-beta.45",
+    "exceljs": "^4.2.1",
     "jquery": "1.11.3",
     "moment": "^2.29.1",
     "vue": "3.0.11"
   },
   "devDependencies": {
+    "@types/node": "^15.6.1",
     "@types/webpack": "^5.28.0",
     "@vue/compiler-sfc": "^3.0.11",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
