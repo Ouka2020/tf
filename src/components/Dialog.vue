@@ -32,7 +32,7 @@ export default {
   setup() {
     const dialogVisible = ref<boolean>(false)
 
-    // 必须返回模块中才能够使
+    // 必须返回模块中才能够使用
     return {dialogVisible}
   },
   methods: {
