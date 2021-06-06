@@ -2,11 +2,11 @@ import {Configuration} from "webpack";
 
 const prodConfig: Configuration = {
     mode: 'production',
-    optimization: {
+    /*optimization: {
         minimize: false,
         mangleExports: false,
-    },
-    externals: {
+    },*/
+    /*externals: {
         'window.moment': 'moment',
         'bootstrap': 'bootstrap',
         'bootstrap-table': 'bootstrap-table',
@@ -16,7 +16,7 @@ const prodConfig: Configuration = {
         'window.vue': 'vue',
         'element-plus': 'element-plus',
         'window.exceljs': 'exceljs'
-    }
+    }*/
 }
 
 export {prodConfig}

@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>test page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.6/dist/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.6/dist/css/bootstrap-theme.css" media="screen">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@1.0.2-beta.46/lib/theme-chalk/index.css" media="screen">
     <% for (let css of csses) { %>
         <link rel="stylesheet" href="<%= css %>" media="screen">
     <% } %>
 </head>
 <body>
 <div class="btn-toolbar"></div>
+<script type="application/ecmascript" src="https://cdn.jsdelivr.net/npm/jquery@1.11.3/dist/jquery.min.js"></script>
+<!--script type="application/ecmascript" src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.6/dist/js/bootstrap.min.js"></script-->
+<script type="application/ecmascript" src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.runtime.global.prod.js"></script>
+<script type="application/ecmascript" src="https://cdn.jsdelivr.net/npm/exceljs@4.2.1/dist/exceljs.min.js"></script>
+<script type="application/ecmascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+<script type="application/ecmascript"
+        src="https://cdn.jsdelivr.net/npm/element-plus@1.0.2-beta.46/lib/index.full.js"></script>
+
 <% for (let js of jses) { %>
-    <script src="<%= js %>"></script>
+    <script type="application/ecmascript" src="<%= js %>"></script>
 <% } %>
 </body>
 </html>

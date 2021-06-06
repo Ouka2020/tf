@@ -77,6 +77,17 @@ const commonConfig = {
     ],
     experiments: {
         topLevelAwait: true
+    },
+    externals: {
+        'window.moment': 'moment',
+        'bootstrap': 'bootstrap',
+        'bootstrap-table': 'bootstrap-table',
+        '$': 'jquery',
+        'jquery': 'jquery',
+        'window.jquery': 'jquery',
+        'window.vue': 'vue',
+        'window.ElementPlus': 'element-plus',
+        'window.exceljs': 'exceljs'
     }
 }
 

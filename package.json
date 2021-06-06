@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap": "3.3.6",
-    "element-plus": "^1.0.2-beta.45",
+    "element-plus": "^1.0.2-beta.46",
     "exceljs": "^4.2.1",
     "jquery": "1.11.3",
     "moment": "^2.29.1",
