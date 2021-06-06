@@ -7,15 +7,15 @@ const prodConfig: Configuration = {
         mangleExports: false,
     },
     externals: {
-        'moment': 'moment',
+        'window.moment': 'moment',
         'bootstrap': 'bootstrap',
         'bootstrap-table': 'bootstrap-table',
         '$': 'jquery',
         'jquery': 'jquery',
         'window.jquery': 'jquery',
-        'vue': 'vue',
+        'window.vue': 'vue',
         'element-plus': 'element-plus',
-        'exceljs': 'exceljs'
+        'window.exceljs': 'exceljs'
     }
 }
 
