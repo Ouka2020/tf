@@ -21,7 +21,7 @@
         <el-row type="flex" justify="center">
           <el-col :span="12"><input type="file" @change="excelFileChangeHandler"></el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="loadDataHanler">加载</el-button>
+            <el-button type="primary" @click="loadDataHandler">加载</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -44,8 +44,10 @@
       </el-card>
       <el-card shadow="never" v-show="stepCurrent === 2">
         <el-row :gutter="10" type="flex" justify="center">
-          <el-col :span="12"><input type="file"></el-col>
-            <el-col :span="4"><el-button type="primary" @click="doCard3">加载3</el-button></el-col>
+          <el-col :span="12"><input type="file" @change="attachFileChangeHandler"></el-col>
+          <el-col :span="4">
+            <el-button type="primary" @click="doRunHandler">加载3</el-button>
+          </el-col>
         </el-row>
       </el-card>
       <el-card shadow="never" :body-style="{padding:'2px'}" :v-show="showResult">
@@ -59,8 +61,10 @@
         </el-scrollbar>
       </el-card>
       <template #footer>
-        <el-button>取 消</el-button>
-        <el-button type="primary" @click="hideHandler">隐 藏</el-button>
+        <el-button :disabled="!cancelMark">取消</el-button>
+        <el-button type="primary" @click="resetDialogHandler" :disabled="!runningMark">重置</el-button>
+        <el-button type="primary" @click="hideDialogHandler">隐藏</el-button>
+        <el-button type="primary" @click="closeDialogHandler">关闭</el-button>
       </template>
     </el-dialog>
   </div>
@@ -68,7 +72,8 @@
 
 <script lang="ts">
 import {reactive, ref} from "vue";
-import { excel } from "../utils";
+import {excel} from "../utils";
+import {ElMessageBox} from 'element-plus';
 
 interface Option {
   label: string,
@@ -93,6 +98,9 @@ export default {
     const selectedValue = ref<string>('')
     const options = ref<Option[]>([])
     const excelFile = ref<File>()
+    const attachFile = reactive<File[]>([])
+    const cancelMark = ref(false)
+    const runningMark = ref(false)
 
     // webSQL
     const _webSql = window.openDatabase('threeFeiWebSQL', '1.0', '', 2 * 1024 * 1024, () => {
@@ -102,7 +110,7 @@ export default {
       tx.executeSql('DROP TABLE IF EXISTS zuJin_guHuaLuRu_insert')
     })
 
-    const webSql = reactive(_webSql)
+    const webSql = _webSql//reactive(_webSql)
 
     // 必须返回模块中才能够使
     return {
@@ -116,7 +124,10 @@ export default {
       options,
       dialogReset,
       webSql,
-      excelFile
+      excelFile,
+      cancelMark,
+      runningMark,
+      attachFile
     }
   },
   methods: {
@@ -141,16 +152,36 @@ export default {
 
       this.dialogReset = true
     },
-    async hideHandler() {
+    async hideDialogHandler() {
       this.dialogReset = false
-      this.dialogVisible = false
+      this.closeDialogHandler()
+      //this.dialogVisible = false
     },
     async excelFileChangeHandler(e: Event) {
       //console.info(e)
       const target = e.target as HTMLInputElement
       this.excelFile = target.files.item(0)
     },
-    async loadDataHanler() {
+    async resetDialogHandler() {
+      this.stepCurrent = 0
+    },
+    async closeDialogHandler() {
+      this.dialogVisible = false
+    },
+    async doRunHandler() {
+      if (this.attachFile.length === 0) {
+        const result = await ElMessageBox.confirm('未选择附件，继续提交将忽略上传附件。确定要继续吗？', '提示', {
+          type: 'info'
+        }).catch(() => {}) // 消除cancel事件未处理错误
+        //window.alert('请选择文件。')
+        if (result === 'cancel') return
+      }
+    },
+    async attachFileChangeHandler(e: Event) {
+      const target = e.target as HTMLInputElement
+      this.attachFile = target.files
+    },
+    async loadDataHandler() {
       if (!this.excelFile) {
         window.alert('请选择文件。')
         return

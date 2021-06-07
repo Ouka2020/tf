@@ -84,10 +84,10 @@ const commonConfig = {
         'bootstrap-table': 'bootstrap-table',
         '$': 'jquery',
         'jquery': 'jquery',
-        'window.jquery': 'jquery',
         'window.vue': 'vue',
-        'window.ElementPlus': 'element-plus',
-        'window.exceljs': 'exceljs'
+        'ElementPlus': 'element-plus',
+        'window.exceljs': 'exceljs',
+        'dayjs': 'dayjs',
     }
 }
 

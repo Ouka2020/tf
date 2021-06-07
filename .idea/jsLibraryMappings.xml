@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{element-plus, vue}" />
+    <file url="PROJECT" libraries="{dayjs, element-plus, vue}" />
+    <includedPredefinedLibrary name="Node.js Core" />
   </component>
 </project>

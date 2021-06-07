@@ -1,7 +1,8 @@
 import {createApp} from 'vue';
 import ZuJinJiaoFei from './ZuJinJiaoFei.vue';
-import {loadStyle} from './utils';
 import ElementPlus from 'element-plus';
+import 'dayjs/locale/zh-cn';
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
 
 const id = `app_vue_${Date.now()}`
 const root = document.createElement('div')
@@ -17,5 +18,5 @@ const app = createApp(ZuJinJiaoFei)
 // }
 
 //console.info(process.env.NODE_MODE)
-app.use(ElementPlus, {size: 'small'})
+app.use(ElementPlus, {size: 'small', locale: zhCn})
 app.mount(`#${id}`)

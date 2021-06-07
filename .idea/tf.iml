@@ -10,5 +10,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="element-plus" level="application" />
     <orderEntry type="library" name="vue" level="application" />
+    <orderEntry type="library" name="element-plus" level="application" />
+    <orderEntry type="library" name="vue" level="application" />
+    <orderEntry type="library" name="dayjs" level="application" />
   </component>
 </module>
