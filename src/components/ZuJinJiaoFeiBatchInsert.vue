@@ -21,7 +21,7 @@
         <el-row type="flex" justify="center">
           <el-col :span="12"><input type="file" @change="excelFileChangeHandler"></el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="loadDataHandler">加载</el-button>
+            <el-button type="primary" @click="loadExcelHandler">加载</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -38,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="doCard2">加载2</el-button>
+            <el-button type="primary" @click="selectSheetHandler">选择</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -46,11 +46,11 @@
         <el-row :gutter="10" type="flex" justify="center">
           <el-col :span="12"><input type="file" @change="attachFileChangeHandler"></el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="doRunHandler">加载3</el-button>
+            <el-button type="primary" @click="doRunHandler">执行</el-button>
           </el-col>
         </el-row>
       </el-card>
-      <el-card shadow="never" :body-style="{padding:'2px'}" :v-show="showResult">
+      <el-card shadow="never" :body-style="{padding:'2px'}">
         <template #header>
           <div>
             <span>执行结果</span>
@@ -62,7 +62,7 @@
       </el-card>
       <template #footer>
         <el-button :disabled="!cancelMark">取消</el-button>
-        <el-button type="primary" @click="resetDialogHandler" :disabled="!runningMark">重置</el-button>
+        <el-button type="primary" @click="resetDialogHandler" :disabled="runningMark">重置</el-button>
         <el-button type="primary" @click="hideDialogHandler">隐藏</el-button>
         <el-button type="primary" @click="closeDialogHandler">关闭</el-button>
       </template>
@@ -72,8 +72,9 @@
 
 <script lang="ts">
 import {reactive, ref} from "vue";
-import {excel} from "../utils";
+import {changeRowsToDict, excel, listToString, StringBuilder} from "../utils";
 import {ElMessageBox} from 'element-plus';
+import moment from "moment";
 
 interface Option {
   label: string,
@@ -92,15 +93,15 @@ export default {
     const dialogReset = ref<boolean>(true)
     const msg = ref<string>('批量新增')
     const stepCurrent = ref<number>(0)
-    const showResult = ref<boolean>(false)
     const dialogFullScreen = ref<boolean>(false)
     const resultList = ref<string[]>([])
     const selectedValue = ref<string>('')
     const options = ref<Option[]>([])
     const excelFile = ref<File>()
-    const attachFile = reactive<File[]>([])
+    const attachFile = ref<File[]>([])
     const cancelMark = ref(false)
     const runningMark = ref(false)
+    const wb = reactive(excel)
 
     // webSQL
     const _webSql = window.openDatabase('threeFeiWebSQL', '1.0', '', 2 * 1024 * 1024, () => {
@@ -110,52 +111,111 @@ export default {
       tx.executeSql('DROP TABLE IF EXISTS zuJin_guHuaLuRu_insert')
     })
 
-    const webSql = _webSql//reactive(_webSql)
+    //const webSql = _webSql//reactive(_webSql)
 
     // 必须返回模块中才能够使
     return {
       dialogVisible,
       msg,
       stepCurrent,
-      showResult,
       dialogFullScreen,
       resultList,
       selectedValue,
       options,
       dialogReset,
-      webSql,
+      webSql: _webSql,
       excelFile,
       cancelMark,
       runningMark,
-      attachFile
+      attachFile,
+      wb
     }
   },
   methods: {
-    // async doCard1() {
-    //   this.stepCurrent++
-    // },
-    async doCard2() {
+    async selectSheetHandler() {
+      if (!this.selectedValue) {
+        await ElMessageBox.alert('还没有选择工作表，无法继续。', '提示', {
+          type: 'info'
+        }).catch(() => {
+        }) // 消除cancel事件未处理错误
+
+        return
+      }
+
       this.stepCurrent++
-    },
-    async doCard3() {
-      this.stepCurrent++
-      this.showResult = true
+
+      const sheetData = await changeRowsToDict(this.wb.getWorksheet(Number(this.selectedValue)))
+      const columnNameList: string[] = []
+      for (let key in sheetData[0]) {
+        if (key === 'id')
+          continue
+
+        columnNameList.push(key)
+      }
+      // 建表
+      this.webSql.transaction((tx) => {
+        const createTable_cmd = new StringBuilder()
+        createTable_cmd.append('CREATE TABLE IF NOT EXISTS zuJin_jiaoFeiLuRu (id INTEGER PRIMARY KEY AUTOINCREMENT,{0})',
+            listToString(columnNameList, ' text'))
+
+        console.debug(createTable_cmd.toString())
+        tx.executeSql(createTable_cmd.toString())
+      }, (error) => { // error
+        console.warn(error)
+      }, () => { // ok
+        console.debug('CREATE TABLE zuJin_jiaoFeiLuRu.')
+      })
+
+      // 填充数据
+      this.webSql.transaction(function (tx) {
+        for (let rowId in sheetData) {
+          let field_value_list = []
+          for (let k of columnNameList) {
+            let value = sheetData[rowId][k]
+
+            if (typeof value == 'string') {
+              field_value_list.push(`"${value}"`)
+            } else if (typeof value == 'undefined') {
+              field_value_list.push('null')
+            } else if (value instanceof Date) {
+              field_value_list.push(`"${moment(value).format("YYYY-MM-DD")}"`)
+            } else {
+              field_value_list.push(value)
+            }
+          }
+
+          const final_cmd = new StringBuilder()
+          final_cmd.append('INSERT INTO zuJin_jiaoFeiLuRu ({0}) VALUES ({1})',
+              listToString(columnNameList), field_value_list.join())
+
+          console.debug(final_cmd.toString())
+          tx.executeSql(final_cmd.toString())
+        }
+      }, (error) => { // error
+        console.warn(error)
+      }, () => { // ok
+        console.debug('insert ok.')
+      })
     },
     async fullscreen_click() {
       this.dialogFullScreen = !this.dialogFullScreen
     },
     async closedHandler() {
       if (this.dialogReset) {
-        this.stepCurrent = 0
+        this.resetHandler()
         return
       }
 
       this.dialogReset = true
     },
+    async resetHandler() {
+      this.stepCurrent = 0
+      this.cancelMark = false
+      this.runningMark = false
+    },
     async hideDialogHandler() {
       this.dialogReset = false
       this.closeDialogHandler()
-      //this.dialogVisible = false
     },
     async excelFileChangeHandler(e: Event) {
       //console.info(e)
@@ -163,7 +223,7 @@ export default {
       this.excelFile = target.files.item(0)
     },
     async resetDialogHandler() {
-      this.stepCurrent = 0
+      this.resetHandler()
     },
     async closeDialogHandler() {
       this.dialogVisible = false
@@ -172,46 +232,37 @@ export default {
       if (this.attachFile.length === 0) {
         const result = await ElMessageBox.confirm('未选择附件，继续提交将忽略上传附件。确定要继续吗？', '提示', {
           type: 'info'
-        }).catch(() => {}) // 消除cancel事件未处理错误
-        //window.alert('请选择文件。')
+        }).catch(() => {
+        }) // 消除cancel事件未处理错误
+
         if (result === 'cancel') return
+
+
       }
     },
     async attachFileChangeHandler(e: Event) {
       const target = e.target as HTMLInputElement
       this.attachFile = target.files
     },
-    async loadDataHandler() {
+    async loadExcelHandler() {
       if (!this.excelFile) {
-        window.alert('请选择文件。')
+        await ElMessageBox.alert('还没有选择文件，无法继续。', '提示', {
+          type: 'info'
+        }).catch(() => {
+        }) // 消除cancel事件未处理错误
+
         return
       }
 
       this.options = []
-      let wb = await excel.xlsx.load(await this.excelFile.arrayBuffer())
-      wb.eachSheet(async (ws, id) => {
-        console.info(`eachSheet {label: ${ws.name}, value: ${id}}`)
+      this.wb = await excel.xlsx.load(await this.excelFile.arrayBuffer())
+      this.wb.eachSheet(async (ws, id) => {
+        console.debug(`eachSheet {label: ${ws.name}, value: ${id}}`)
         this.options.push({label: ws.name, value: id} as Option)
-        // threeFei.sheetsValues.push(await changeRowsToDict(ws))
       })
-      // console.debug(threeFei.sheetIndex)
-      // console.debug(threeFei.sheetsValues)
-      // let u = $('#zuJin_guHuaLuRu_insert_sheetSelector .panel-body .form-group:first')
-      // u.empty()
-      // threeFei.sheetIndex.forEach((val, index) => {
-      //   console.debug(`value: ${val}, index: ${index}`)
-      //   u.append(`<label class="btn btn-default"><input type="radio" name="selectedSheet" value="${index}">${val}</label>`)
-      // })
-      // $('#zuJin_guHuaLuRu_insert_sheetSelector').collapse('show')
       this.stepCurrent++
     }
   },
-  mounted() {
-    for (let i = 0; i < 10; i++) {
-      const v = Math.random().toString()
-      this.resultList.push(`<span style="color: red">${v}</span>`)
-    }
-  }
 }
 </script>
 

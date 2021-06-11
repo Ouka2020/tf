@@ -14,7 +14,6 @@ export default {
     //const msg = ref<string>()
   }
 }
-
 </script>
 
 <style lang="scss" scoped>

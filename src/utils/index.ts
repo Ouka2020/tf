@@ -17,6 +17,14 @@ export function loadStyle(url: string): void {
     head.appendChild(link);
 }
 
+export function loadScript(url: string): void {
+    const _body = document.querySelector('body');
+    const link = document.createElement('script');
+    link.type = 'module';//'application/ecmascript';
+    link.src = url;
+    _body.appendChild(link);
+}
+
 export class ThreeFei {
     //消息父节点
     elementSelector: HTMLDivElement
@@ -164,13 +172,13 @@ export class StringBuilder {
  * 将所有的行数据转换为json
  * @param worksheet 工作表对象
  */
-export async function changeRowsToDict(worksheet: ExcelJS.Worksheet) {
+export async function changeRowsToDict(worksheet: ExcelJS.Worksheet): Promise<{}[]> {
     /**
      * 转换单元格对象到字典
      * @param keys 列集合
      * @param row 行对象
      */
-    function cellValueToDict2(keys: ExcelJS.CellValue[] | { [p: string]: ExcelJS.CellValue }, row: ExcelJS.Row) {
+    function cellValueToDict2(keys: ExcelJS.CellValue[] | { [p: string]: ExcelJS.CellValue }, row: ExcelJS.Row): {} {
         let data: { [p: string]: ExcelJS.CellValue } = {}
         row.eachCell((cell, colNumber) => {
             let value: ExcelJS.CellValue | { error: ExcelJS.CellErrorValue } // 取值
@@ -312,6 +320,21 @@ export function setToString(s: Set<string>, ext?: string): string {
     return l.join(',')
 }
 
+/**
+ * Set转字符串，分隔符为‘,’
+ * @param s Set对象
+ * @param ext 额外字符串
+ */
+export function listToString(s: Array<string>, ext?: string): string {
+    let l: string[] = []
+    for (const v of s) {
+        if (ext)
+            l.push(v + ext)
+        else
+            l.push(v)
+    }
+    return l.join(',')
+}
 /**
  * 判断附件是否需要上传
  * @param attachList 文件清单

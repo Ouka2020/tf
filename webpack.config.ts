@@ -17,11 +17,13 @@ const dotEnv = dotenv.config({
 const commonConfig = {
     entry: {
         //index: ['./src/index.ts', './src/index.scss'],
-        zuJinJiaoFei: ['./src/zu_jin_jiao_fei.ts', './src/index.scss']
+        zuJinJiaoFei: ['./src/zu_jin_jiao_fei.ts', './src/index.scss'],
+        //elAlert:['./src/ElAlert.ts']
     },
     output: {
         path: path.resolve('dist'),
-        assetModuleFilename: '[name]][ext]'
+        assetModuleFilename: '[name]][ext]',
+        publicPath: './'
     },
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
@@ -62,6 +64,21 @@ const commonConfig = {
                 ]
             },
             {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: ExtractCssChunksPlugin.loader,
+                        options: {
+                            hot: true,
+                            reloadAll: true,
+                            modules: true,
+                            esModule: true,
+                        }
+                    },
+                    'css-loader'
+                ]
+            },
+            {
                 test: /\.(svg|ttf|eot|woff)$/,
                 type: 'asset/resource'
             }
@@ -79,15 +96,15 @@ const commonConfig = {
         topLevelAwait: true
     },
     externals: {
-        'window.moment': 'moment',
+        //'window.moment': 'moment',
         'bootstrap': 'bootstrap',
         'bootstrap-table': 'bootstrap-table',
         '$': 'jquery',
         'jquery': 'jquery',
-        'window.vue': 'vue',
-        'ElementPlus': 'element-plus',
-        'window.exceljs': 'exceljs',
-        'dayjs': 'dayjs',
+        //'window.vue': 'vue',
+        //'ElementPlus': 'element-plus',
+        //'window.exceljs': 'exceljs',
+        //'window.dayjs': 'dayjs',
     }
 }
 
